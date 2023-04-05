@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class EmailValidator {
 	
 	 public static String verifyTheEmailInTheList(String email, List<String> emailList) {
-		 
+		 //below is foreach loop
 		   for(String s: emailList) {
 			   
 			   if(s.equalsIgnoreCase(email)) {
