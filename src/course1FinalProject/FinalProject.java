@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ public class FinalProject {
 		System.out.println("Developed By,");
 		System.out.println("Lockers Pvt. Ltd.");
 		System.out.println("==================================================");
+		loadFiles();
 		mainOptions();
 
 	}
@@ -30,10 +32,13 @@ public class FinalProject {
 	                 "2: Manage My Files",
 	                 "3: Close the Application"};
 	  System.out.println("Here are your main options. Please input your choice eg: 1 or 2 etc.,\n");
+	 
 	  Scanner smo = new Scanner(System.in);
+	  
 	  for(String str: mo) {
 		  System.out.println(str);
 	  }
+	  try {
 	  switch(smo.nextInt()) {
 	  case 1: 
 		  retrieveFiles();
@@ -47,15 +52,17 @@ public class FinalProject {
 	  default:
 		  System.out.println("You entered an incorrect input. Please try again\n");
 		  mainOptions();
-	  }  
+	  }
+	  }catch(InputMismatchException e) {
+		  System.out.println("You entered invalid input. Please read the instructions carefully and enter valid input\n");
+		  mainOptions();
+	  }
 		
 	}
 
 	public static void retrieveFiles() {
 		//Here we are retrieving the files in ascending order by below code
 		System.out.println("Below are the files that currently exist in the files Directory\n");
-		dir = new File("./FilesDirectory");
-		fileslist = Arrays.asList(dir.list());
 		if(fileslist.size()==0) {
 			System.out.println("Currently there are no files in the files directory.");
 		}
@@ -66,9 +73,13 @@ public class FinalProject {
 		mainOptions();
 	}
 	
-	public static void manageFiles() {
+	public static void loadFiles() {
+		dir = new File("./FilesDirectory");
+		fileslist = Arrays.asList(dir.list());		
+	}
 	
-		System.out.println("Here are the more options for you. Kindly input your choice\n");
+	public static void manageFiles() {	
+		System.out.println("Here are the more options for you. Kindly input your choice eg: 1 or 2 etc\n");
 		String[] so = {"1: Add a File to the Existing Files",
                 "2: Delete a File",
                 "3: Search for a File",
@@ -77,6 +88,7 @@ public class FinalProject {
 			System.out.println(str);
 		}
 		Scanner smf = new Scanner(System.in);
+		try {
 		switch(smf.nextInt()) {
 		case 1: 
 			addFile();
@@ -94,6 +106,11 @@ public class FinalProject {
 			System.out.println("You entered an incorrect input. Please try again\n");
 			manageFiles();		
 	}}
+		catch(InputMismatchException e) {
+			System.out.println("You entered invalid input. Please read the instructions carefully and enter valid input\n");
+			manageFiles();
+		}
+	}
 
 	public static void closeApp() {
 		System.out.println("Application has been closed!");
@@ -113,6 +130,7 @@ public class FinalProject {
 		}else {
 		try {
 			file.createNewFile();
+			loadFiles();
 		} catch (IOException e) {
 			System.out.println("Directory location is not found\n");
 		}
@@ -130,6 +148,7 @@ public class FinalProject {
 		    	File deletefile = new File("./FilesDirectory/"+temp);
 		    	if(deletefile.delete()) {
 		    		System.out.println("File deleted successfully!\n");
+		    		loadFiles();
 		    	}else
 		    		System.out.println("File could not be deleted. File may be opened or being used by another program\n");
 		     }	else 
